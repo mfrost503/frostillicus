@@ -5,6 +5,8 @@ import socket
 import string
 import time
 import random
+import urlparse
+from sports.mlb import Mlb
 
 HOST = "irc.freenode.net"
 PORT = 6667
@@ -21,9 +23,10 @@ s.sendall("JOIN :%s\r\n" % CHAN)
 s.sendall("NOTICE %s :%s\r\n" % (CHAN, "Hello There!"))
 s.sendall("PRIVMSG %s :%s\r\n" % (CHAN, "I am a bot"))
 greetings = ['hey','hello','yo','whaddup',"what's crackin"]
+m = Mlb()
+schedule = m.getRecentGame('cubs')
 while 1:
     readbuffer=readbuffer+s.recv(1024)
-    print readbuffer
     temp=string.split(readbuffer,"\n")
     readbuffer=temp.pop()
     for line in temp:
