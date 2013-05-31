@@ -15,6 +15,7 @@ NICK=bot.getNick()
 CHAN=bot.getChannel()
 readbuffer = ""
 greetings = ['hey','hello','yo','whaddup',"what's crackin"]
+funnies = {"whoisyourdaddy?":"mfrost503","andwhatdoeshedo":"writes lame IRC bots"}
 while 1:
     readbuffer=readbuffer+s.recv(1024)
     temp=string.split(readbuffer,"\n")
@@ -33,9 +34,15 @@ while 1:
             msg = sender
             msg += ': ' 
             msg += random.choice(greetings)
+	    question = ""
             for i in range(4,len(line)) :
+	        question += line[i] 
                 if(line[i] in greetings) :
                     s.sendall("PRIVMSG %s :%s\r\n" % (CHAN,msg)) 
+		if(question.strip() in funnies):
+		    funny = question 
+		    response = funnies[funny]
+		    s.sendall("PRIVMSG %s :%s\r\n" % (CHAN,response))
         if(len(line) > 3 and line[3] == ":!mlb" and line[4] != ""):
             m = Mlb()
             score = m.getRecentGame(line[4])

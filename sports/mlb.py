@@ -20,6 +20,13 @@ class Mlb(object):
         resp, content = h.request("http://gd2.mlb.com/components/game/mlb/year_"+ year +"/month_"+month+"/day_"+day+"/master_scoreboard.json")
         if(resp.status == 200):
             self.data = json.loads(content)
+	    teamNicks = {'same-ol-jays':'blue-jays',
+	    	'evil-empire':'yankees',
+		'bo-sox':'red-sox',
+		'phightins':'phillies',
+		'lastros': 'astros'}
+	    if(team in teamNicks):
+	        team = teamNicks[team]
             team = team.replace('-',' ').title()
             self.team = team
             games = self.data['data']['games']['game']
