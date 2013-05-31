@@ -7,29 +7,20 @@ import time
 import random
 import urlparse
 from sports.mlb import Mlb
+from frostillicus import frostillicus
 
-HOST = "irc.freenode.net"
-PORT = 6667
-NICK = "frostillicus"
-IDENT = "frostillicus"
-REALNAME = "frostillicus"
-CHAN = "#dayly"
+bot = frostillicus.frostillicus()
+s = bot.connect()
+NICK=bot.getNick()
+CHAN=bot.getChannel()
 readbuffer = ""
-s = socket.socket()
-s.connect((HOST, PORT))
-s.sendall("NICK %s\r\n" % NICK)
-s.sendall("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))
-s.sendall("JOIN :%s\r\n" % CHAN)
-s.sendall("NOTICE %s :%s\r\n" % (CHAN, "Hello There!"))
-s.sendall("PRIVMSG %s :%s\r\n" % (CHAN, "I am a bot"))
 greetings = ['hey','hello','yo','whaddup',"what's crackin"]
-m = Mlb()
-schedule = m.getRecentGame('cubs')
 while 1:
     readbuffer=readbuffer+s.recv(1024)
     temp=string.split(readbuffer,"\n")
     readbuffer=temp.pop()
     for line in temp:
+        print temp
         line=string.rstrip(line)
         line=string.split(line)
         if(line[0] == "PING"):
@@ -45,4 +36,9 @@ while 1:
             for i in range(4,len(line)) :
                 if(line[i] in greetings) :
                     s.sendall("PRIVMSG %s :%s\r\n" % (CHAN,msg)) 
-
+        if(len(line) > 3 and line[3] == ":!mlb" and line[4] != ""):
+            m = Mlb()
+            score = m.getRecentGame(line[4])
+            if(score != ""):
+                s.sendall("PRIVMSG %s :%s\r\n" % (CHAN,score))
+            
