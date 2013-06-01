@@ -24,13 +24,38 @@ class Mlb(object):
 	    	'evil-empire':'yankees',
 		'bo-sox':'red-sox',
 		'phightins':'phillies',
-		'lastros': 'astros'}
+		'lastros': 'astros',
+		'pale-hose':'white-sox',
+		'the-birds': 'orioles',
+		'wahoos':'indians',
+		'twinkies':'twins',
+		'the-halos':'angels',
+		'the-elephants':'as',
+		'ms': 'mariners',
+		'blue-crew':'rangers',
+		'bravos':'braves',
+		'the-fish':'marlins',
+		'the-amazins':'mets',
+		'nats':'nationals',
+		'north-siders':'cubs',
+		'cubbies':'cubs',
+		'south-siders':'white-sox',
+		'big-red-machine':'reds',
+		'brew-crew':'brewers',
+		'buccos':'pirates',
+		'redbirds':'cardinals',
+		'dbacks':'d-backs',
+		'rox':'rockies',
+		'dem-bums':'dodgers',
+		'friars':'padres',
+		'los-gigantes':'giants'
+		}
 	    if(team in teamNicks):
 	        team = teamNicks[team]
             team = team.replace('-',' ').title()
             self.team = team
             games = self.data['data']['games']['game']
-            gameCount = len(games) - 1
+            gameCount = len(games)
             score='No game for the ' + team + ' today'
             for i in range(0,gameCount) :
                 if(games[i]['home_team_name'] == team or games[i]['away_team_name'] == team):
