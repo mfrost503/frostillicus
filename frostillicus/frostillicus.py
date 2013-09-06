@@ -7,7 +7,7 @@ class frostillicus(object):
     IDENT = "frostillicus"
     NICK = "frostillicus"
     REALNAME = "frostillicus"
-    CHAN = "#phpmentoring"
+    CHAN = "#dayly"
    
     def connect(self,host=""):
         s = socket()
