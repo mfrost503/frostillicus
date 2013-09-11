@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+
+import unittest
+from frostillicus import frostillicus
+import socket
+from mock import MagicMock
+
+class TestFrostillicus(unittest.TestCase):
+
+    def setUp(self):
+        self.nick = "frostillicus"
+        self.host = "irc.freenode.net"
+        self.port = 6667
+        self.channel = "#phpmentoring"
+        self.socketMock = MagicMock(name='socket', spec=socket.socket)
+        self.bot = frostillicus.frostillicus(self.socketMock, self.channel, self.host)
+	
+    def test_getChannel(self):
+        expected = self.channel
+        channel = self.bot.getChannel()
+        self.assertEqual(expected, channel)
+
+    def test_getNick(self):
+        expected = self.nick
+        nick = self.bot.getNick()
+        self.assertEqual(expected, nick)
+
+    def test_BotCanConnect(self):
+        self.bot.connect(self.host)
+        self.socketMock.connect.assert_called_with((self.host, self.port))
+
+    def test_BotCanJoinChannel(self):
+        self.bot.joinChannel("#phpmentoring")
+        self.socketMock.sendall("JOIN :%s\r\n" % "#phpmentoring")
+
+    def test_BotCanSetNick(self):
+        nick = "frostillicus"
+        self.bot.setNick(nick)
+        retrieved = self.bot.getNick()
+        self.assertEqual(nick, retrieved)
+
+    def test_BotCanSetChannel(self):
+        channel = "#testchannel"
+        self.bot.setChannel(channel)
+        retrieved = self.bot.getChannel()
+        self.assertEqual(channel, retrieved)
+
+if __name__ == '__main__':
+	    unittest.main()
