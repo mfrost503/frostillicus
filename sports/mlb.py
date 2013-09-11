@@ -60,7 +60,6 @@ class Mlb(object):
             for i in range(0,gameCount) :
                 if(games[i]['home_team_name'] == team or games[i]['away_team_name'] == team):
                     game = games[i] 
-		    print game
                     home_team = game['home_team_name']
                     away_team = game['away_team_name']
                     if(game['status']['status'] != "Preview"):
@@ -69,6 +68,6 @@ class Mlb(object):
                         score = away_team + " " + away_score + " " + home_team + " " + home_score + " " + game['status']['status']
                     else:
                         score = away_team + "(" + game['away_win'] + "-" + game['away_loss'] + ")@"
-                        score += home_team + "(" + game['home_win'] + "-" + game['home_loss'] + ") " + game['time'] + game['home_time_zone'] + " TV: " + game['broadcast']['away']['tv'] + "/" + game['broadcast']['home']['tv']
+                        score += home_team + "(" + game['home_win'] + "-" + game['home_loss'] + ") " + game['time'] + game['home_time_zone'] 
             return score
         

@@ -11,7 +11,8 @@ from frostillicus import frostillicus
 from frostillicus import interaction
 from frostillicus import pong
 
-bot = frostillicus.frostillicus()
+sock = socket.socket()
+bot = frostillicus.frostillicus(sock)
 s = bot.connect()
 NICK=bot.getNick()
 CHAN=bot.getChannel()
@@ -26,16 +27,18 @@ while 1:
     readbuffer=temp.pop()
     for line in temp:
         print temp
-	pong.checkPing(temp)
-	botInteraction = interaction.interaction(line, NICK, greetings)
-	if(botInteraction.isInteraction() == True): 
-	    s.sendall("PRIVMSG %s :%s\r\n" % (CHAN,botInteraction.getResponse()))
-        if(len(line) == 4 and line[3] == ":!mlb"):
-	    response = "Not sure what you're asking for"
-	    s.sendall("PRIVMSG %s :%s\r\n" % (CHAN,response))
+        line = string.rstrip(line)
+        line = string.split(line)
+        pong.checkPing(temp)
+        botInteraction = interaction.interaction(line, NICK, greetings)
+        if(botInteraction.isInteraction() == True): 
+            s.sendall("PRIVMSG %s :%s\r\n" % (CHAN,botInteraction.getResponse()))
+            if(len(line) == 4 and line[3] == ":!mlb"):
+                response = "Not sure what you're asking for"
+                s.sendall("PRIVMSG %s :%s\r\n" % (CHAN,response))
         if(len(line) > 4 and line[3] == ":!mlb"):
             m = Mlb()
             score = m.getRecentGame(line[4])
             if(score != ""):
                 s.sendall("PRIVMSG %s :%s\r\n" % (CHAN,score))
-            
+        
