@@ -17,7 +17,7 @@ class Response():
 
     def isResponse(self, line):
         for response in self.responses:
-            if response in line and "frostillicus:" in line:
+            if response in line and "frostillicus:" in line and "PRIVMSG" in line:
                 return True
         return False
 
