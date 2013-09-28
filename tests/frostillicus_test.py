@@ -4,6 +4,7 @@ import unittest
 from frostillicus import frostillicus
 import socket
 from mock import MagicMock
+from mock import call
 
 class TestFrostillicus(unittest.TestCase):
 
@@ -31,7 +32,7 @@ class TestFrostillicus(unittest.TestCase):
 
     def test_BotCanJoinChannel(self):
         self.bot.joinChannel("#phpmentoring")
-        self.socketMock.sendall("JOIN :%s\r\n" % "#phpmentoring")
+        self.socketMock.sendall.assert_called_with("JOIN :%s\r\n" % "#phpmentoring")
 
     def test_BotCanSetNick(self):
         nick = "frostillicus"
@@ -45,5 +46,10 @@ class TestFrostillicus(unittest.TestCase):
         retrieved = self.bot.getChannel()
         self.assertEqual(channel, retrieved)
 
+    def test_BotCanIdentify(self):
+        self.bot.identify()
+        expected = [call.sendall('NICK frostillicus\r\n'), call.sendall('USER frostillicus irc.freenode.net bla :frostillicus\r\n')]
+        self.assertEqual(self.socketMock.mock_calls, expected)
+
 if __name__ == '__main__':
-	    unittest.main()
+    unittest.main()

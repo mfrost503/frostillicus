@@ -26,7 +26,7 @@ while 1:
     temp=string.split(readbuffer,"\n")
     readbuffer=temp.pop()
     for line in temp:
-        print temp
+        print line
         line = string.rstrip(line)
         line = string.split(line)
         pong.checkPing(temp)
